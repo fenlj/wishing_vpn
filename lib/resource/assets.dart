@@ -33,4 +33,8 @@ class Assets {
   static const iconRate = 'assets/icon_rate.png';
   static const iconMsg = 'assets/icon_msg.png';
   static const iconPp = 'assets/icon_pp.png';
+  static const iconDialogClose = 'assets/icon_d_close.png';
+  static const btnGetBg = 'assets/btn_get_bg.png';
+  static const imgAddSuccess = 'assets/img_add_success.png';
+  static const dialogBg = 'assets/dialog_bg.png';
 }

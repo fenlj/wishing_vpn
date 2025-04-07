@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:wishing_vpn/controllers/vpn_ctrl.dart';
+import 'package:wishing_vpn/pages/dialog/loading_dialog.dart';
 import 'package:wishing_vpn/resource/assets.dart';
 
 class MoreOpGroup extends StatelessWidget {
-  const MoreOpGroup({super.key, this.isShowFixNetwork = true});
+  const MoreOpGroup({super.key, this.isShowFixNetwork = false});
   final bool isShowFixNetwork;
 
   @override
@@ -21,7 +22,7 @@ class MoreOpGroup extends StatelessWidget {
                   Expanded(
                     child: GestureDetector(
                       onTap: () {
-                        ctrl.extendDuration(10);
+                        LoadingDialog.show(10);
                       },
                       child: Container(
                         height: 108,
@@ -64,7 +65,7 @@ class MoreOpGroup extends StatelessWidget {
                   Expanded(
                     child: GestureDetector(
                       onTap: () {
-                        ctrl.extendDuration(15);
+                        LoadingDialog.show(15);
                       },
                       child: Container(
                         height: 108,

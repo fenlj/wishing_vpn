@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:wishing_vpn/pages/home/widgets/more_op_group.dart';
 import 'package:wishing_vpn/pages/home/widgets/toolbar_location_vpn_button.dart';
 import 'package:wishing_vpn/pages/home/widgets/vpn_status_info.dart';
@@ -50,19 +51,28 @@ class HomePage extends StatelessWidget {
               _buildMenuItem(
                 path: Assets.iconRate,
                 title: 'Rate Us',
-                onTap: () {},
+                onTap: () {
+                  launchUrl(Uri.parse(
+                      'https://play.google.com/store/apps/developer?id=com.wishvpn.wishing'));
+                },
               ),
               Gap(26),
               _buildMenuItem(
                 path: Assets.iconMsg,
                 title: 'Share us',
-                onTap: () {},
+                onTap: () {
+                  launchUrl(Uri.parse(
+                      'https://play.google.com/store/apps/developer?id=com.wishvpn.wishing'));
+                },
               ),
               Gap(26),
               _buildMenuItem(
                 path: Assets.iconPp,
                 title: 'Privacy Policy',
-                onTap: () {},
+                onTap: () {
+                  launchUrl(
+                      Uri.parse('https://sites.google.com/view/wishing-vpn'));
+                },
               ),
             ],
           ),

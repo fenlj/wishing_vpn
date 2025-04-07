@@ -20,4 +20,6 @@ class Assets {
   static const vpnBtnToStoppedPNG = 'assets/vpn_btn_to_stopped.png';
   static const vpnConnectedBgPNG = 'assets/vpn_connected_bg.png';
   static const vpnStoppBgPNG = 'assets/vpn_stopp_bg.png';
+  static const moreBg1 = 'assets/more_bg_1.png';
+  static const moreBg2 = 'assets/more_bg_2.png';
 }

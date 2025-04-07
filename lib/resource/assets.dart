@@ -30,4 +30,7 @@ class Assets {
   static const iconP2 = 'assets/icon_p2.png';
   static const iconP3 = 'assets/icon_p3.png';
   static const iconP4 = 'assets/icon_p4.png';
+  static const iconRate = 'assets/icon_rate.png';
+  static const iconMsg = 'assets/icon_msg.png';
+  static const iconPp = 'assets/icon_pp.png';
 }

@@ -94,6 +94,7 @@ class AutoProgressBarState extends State<AutoProgressBar> {
         ? LinearProgressIndicator(
             value: _progress,
             backgroundColor: Color(0xff2B3378),
+            borderRadius: BorderRadius.circular(10),
             valueColor: const AlwaysStoppedAnimation<Color>(Color(0xffFFF76D)),
           )
         : SizedBox.shrink();

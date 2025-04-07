@@ -16,7 +16,10 @@ class AppToolbar extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Image.asset(Assets.appTextPNG, width: 122, height: 22),
-          Image.asset(Assets.iconMenuPNG, width: 18, height: 18),
+          GestureDetector(
+            onTap: () => Scaffold.of(context).openEndDrawer(),
+            child: Image.asset(Assets.iconMenuPNG, width: 18, height: 18),
+          ),
         ],
       ),
     );

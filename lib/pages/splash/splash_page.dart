@@ -23,7 +23,7 @@ class SplashPage extends StatelessWidget {
               Image.asset(Assets.appTextPNG, width: 155, height: 28),
               const SizedBox(height: 36),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 40),
+                padding: const EdgeInsets.symmetric(horizontal: 112),
                 child: AutoProgressBar(
                   maxWaitTime: const Duration(seconds: 1),
                   onFirstStageComplete: () {},

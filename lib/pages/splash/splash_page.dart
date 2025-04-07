@@ -25,7 +25,7 @@ class SplashPage extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 112),
                 child: AutoProgressBar(
-                  maxWaitTime: const Duration(seconds: 1),
+                  maxWaitTime: const Duration(seconds: 4),
                   onFirstStageComplete: () {},
                   onComplete: () => Get.offAllNamed(RoutePaths.home),
                 ),

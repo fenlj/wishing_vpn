@@ -8,6 +8,7 @@ class AutoProgressBar extends StatefulWidget {
   final double firstStageProgress;
   final VoidCallback? onFirstStageComplete;
   final VoidCallback? onComplete;
+  final bool isEnableShow;
 
   const AutoProgressBar({
     super.key,
@@ -16,6 +17,7 @@ class AutoProgressBar extends StatefulWidget {
     this.firstStageProgress = 0.8,
     this.onFirstStageComplete,
     this.onComplete,
+    this.isEnableShow = true,
   });
 
   @override
@@ -37,7 +39,8 @@ class AutoProgressBarState extends State<AutoProgressBar> {
 
   void _startFirstStage() {
     final interval = widget.firstStageTime.inMilliseconds ~/ 60;
-    _firstStageTimer = Timer.periodic(Duration(milliseconds: interval), (timer) {
+    _firstStageTimer =
+        Timer.periodic(Duration(milliseconds: interval), (timer) {
       setState(() {
         _progress += widget.firstStageProgress / 60;
         if (_progress >= widget.firstStageProgress) {
@@ -64,7 +67,8 @@ class AutoProgressBarState extends State<AutoProgressBar> {
     _maxWaitTimer?.cancel();
 
     final interval = const Duration(seconds: 1).inMilliseconds ~/ 60;
-    _secondStageTimer = Timer.periodic(Duration(milliseconds: interval), (timer) {
+    _secondStageTimer =
+        Timer.periodic(Duration(milliseconds: interval), (timer) {
       setState(() {
         _progress += (1.0 - widget.firstStageProgress) / 60;
         if (_progress >= 1.0) {
@@ -86,10 +90,12 @@ class AutoProgressBarState extends State<AutoProgressBar> {
 
   @override
   Widget build(BuildContext context) {
-    return LinearProgressIndicator(
-      value: _progress,
-      backgroundColor: Color(0xff2B3378),
-      valueColor: const AlwaysStoppedAnimation<Color>(Color(0xffFFF76D)),
-    );
+    return widget.isEnableShow
+        ? LinearProgressIndicator(
+            value: _progress,
+            backgroundColor: Color(0xff2B3378),
+            valueColor: const AlwaysStoppedAnimation<Color>(Color(0xffFFF76D)),
+          )
+        : SizedBox.shrink();
   }
 }

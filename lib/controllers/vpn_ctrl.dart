@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:oneconnect_flutter/openvpn_flutter.dart';
+import 'package:wishing_vpn/pages/dialog/executing_dialog.dart';
 import 'package:wishing_vpn/resource/assets.dart';
 
 // const String apiKey = '4.ybL4psDW856z1En0qLR73H3l.9tuImZHmuV0aWu4nr1nvA4k';
@@ -45,6 +46,9 @@ class VpnCtrl extends GetxController {
   VPNStage vpnStage = VPNStage.disconnected;
   var vpnState = VpnState.stopped;
   VpnServer? selectedVpnServer;
+  var vpnStateObs = VpnState.stopped.obs;
+
+  static VpnCtrl get ins => Get.find<VpnCtrl>();
 
   // 修改倒计时相关属性
   final _remainingSeconds = 0.obs;
@@ -116,20 +120,24 @@ class VpnCtrl extends GetxController {
     }
     if (stage == VPNStage.disconnected) {
       vpnState = VpnState.stopped;
+      vpnStateObs.value = VpnState.stopped;
       _remainingSeconds.value = 0;
       _targetDurationSeconds = defaultDurationSeconds;
     }
     if (stage == VPNStage.connected) {
       vpnState = VpnState.connected;
+      vpnStateObs.value = VpnState.connected;
     }
     update();
   }
 
   void toggleVpn() {
     if (vpnState == VpnState.stopped) {
+      ExecutingDialog.show(true);
       startVpn(null);
     } else {
-      stopVpn();
+      // stopVpn();
+      ExecutingDialog.show(false);
     }
   }
 
@@ -138,6 +146,7 @@ class VpnCtrl extends GetxController {
         vpnServerList.where((e) => e.isFree == "1").toList().lastOrNull;
     if (vpnSever == null) {
       vpnState = VpnState.error;
+      vpnStateObs.value = VpnState.error;
       update();
       return;
     }
@@ -152,10 +161,12 @@ class VpnCtrl extends GetxController {
 
     if (config == null) {
       vpnState = VpnState.error;
+      vpnStateObs.value = VpnState.error;
       update();
       return;
     }
     vpnState = VpnState.connecting;
+    vpnStateObs.value = VpnState.connecting;
     engine.connect(
       config,
       vpnSever.serverName,
@@ -172,6 +183,7 @@ class VpnCtrl extends GetxController {
   Future<void> stopVpn() async {
     if (vpnState == VpnState.stopped) return;
     vpnState = VpnState.disconnecting;
+    vpnStateObs.value = VpnState.disconnecting;
     update();
     await Future.delayed(Duration(seconds: 1));
     engine.disconnect();

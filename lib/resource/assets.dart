@@ -22,4 +22,8 @@ class Assets {
   static const vpnStoppBgPNG = 'assets/vpn_stopp_bg.png';
   static const moreBg1 = 'assets/more_bg_1.png';
   static const moreBg2 = 'assets/more_bg_2.png';
+  static const iconResTime = 'assets/icon_res_time.png';
+  static const iconResLocation = 'assets/icon_res_location.png';
+  static const resultConnect = 'assets/result_connect.png';
+  static const resultDisconnected = 'assets/result_disconnected.png';
 }

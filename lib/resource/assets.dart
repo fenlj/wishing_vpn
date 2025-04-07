@@ -26,4 +26,8 @@ class Assets {
   static const iconResLocation = 'assets/icon_res_location.png';
   static const resultConnect = 'assets/result_connect.png';
   static const resultDisconnected = 'assets/result_disconnected.png';
+  static const iconP1 = 'assets/icon_p1.png';
+  static const iconP2 = 'assets/icon_p2.png';
+  static const iconP3 = 'assets/icon_p3.png';
+  static const iconP4 = 'assets/icon_p4.png';
 }

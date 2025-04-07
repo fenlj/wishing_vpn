@@ -133,7 +133,6 @@ class VpnCtrl extends GetxController {
 
   void toggleVpn() {
     if (vpnState == VpnState.stopped) {
-      ExecutingDialog.show(true);
       startVpn(null);
     } else {
       // stopVpn();
@@ -165,6 +164,7 @@ class VpnCtrl extends GetxController {
       update();
       return;
     }
+    ExecutingDialog.show(true);
     vpnState = VpnState.connecting;
     vpnStateObs.value = VpnState.connecting;
     engine.connect(

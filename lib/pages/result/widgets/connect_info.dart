@@ -74,15 +74,17 @@ class ConnectInfo extends StatelessWidget {
                   ),
                 ),
                 Spacer(),
-                GetBuilder<VpnCtrl>(builder: (ctrl) {
-                  return Text(
-                    ctrl.selectedVpnServer?.serverName ?? "Smart sever",
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Color(0xffFFCE3F),
-                    ),
-                  );
-                }),
+                GetBuilder<VpnCtrl>(
+                  builder: (ctrl) {
+                    return Text(
+                      ctrl.selectedVpnServer?.serverName ?? "Smart sever",
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Color(0xffFFCE3F),
+                      ),
+                    );
+                  },
+                ),
                 Gap(16),
               ],
             ),

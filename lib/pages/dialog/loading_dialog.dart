@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:wishing_vpn/controllers/vpn_ctrl.dart';
+import 'package:wishing_vpn/fb/ad_ctrl.dart';
 import 'package:wishing_vpn/pages/dialog/add_success_dialog.dart';
 import 'package:wishing_vpn/pages/pages.dart';
 import 'package:wishing_vpn/pages/splash/auto_progress_bar.dart';
@@ -74,11 +75,31 @@ class LoadingDialog extends StatefulWidget {
 class _LoadingDialogState extends State<LoadingDialog> {
   late DateTime startTime;
   late int mins;
+  late bool isAdEnable;
+  late bool isAdRequested;
+  final _pbKey = GlobalKey<AutoProgressBarState>();
   @override
   void initState() {
     super.initState();
     mins = widget.mins;
     startTime = DateTime.now();
+    isAdRequested = false;
+    isAdEnable = AdCtrl.instance.canShowAd(AdPosition.interThree);
+    _requestAd();
+  }
+
+  void _requestAd() {
+    if (isAdRequested) return;
+    isAdRequested = true;
+    AdCtrl.instance.loadAd(
+      AdPosition.interThree,
+      onSuccess: () {
+        _pbKey.currentState?.completeProgress();
+      },
+      onFailed: (e) {
+        _pbKey.currentState?.completeProgress();
+      },
+    );
   }
 
   @override
@@ -106,8 +127,14 @@ class _LoadingDialogState extends State<LoadingDialog> {
               child: Stack(
                 children: [
                   AutoProgressBar(
-                    maxWaitTime: Duration(seconds: 1),
-                    onComplete: () => widget.onEnd(),
+                    key: _pbKey,
+                    maxWaitTime: Duration(seconds: 18),
+                    onComplete: () {
+                      if (isAdEnable) {
+                        AdCtrl.instance.showAd(AdPosition.interThree);
+                      }
+                      widget.onEnd();
+                    },
                     isEnableShow: false,
                   ),
                   LoadingAnimationWidget.waveDots(color: Colors.white, size: 44)

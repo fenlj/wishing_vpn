@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:wishing_vpn/controllers/vpn_ctrl.dart';
+import 'package:wishing_vpn/fb/ad_ctrl.dart';
 import 'package:wishing_vpn/pages/pages.dart';
 import 'package:wishing_vpn/pages/splash/auto_progress_bar.dart';
 
@@ -54,12 +55,46 @@ class ExecutingDialog extends StatefulWidget {
 class _ExecutingDialogState extends State<ExecutingDialog> {
   late DateTime startTime;
   late bool isConnected;
+  late bool isAdEnable;
+  late bool isAdRequested;
+  final _pbKey = GlobalKey<AutoProgressBarState>();
 
   @override
   void initState() {
     super.initState();
     isConnected = widget.isToConnected;
     startTime = DateTime.now();
+    isAdEnable = AdCtrl.instance.canShowAd(AdPosition.interTwo);
+    if (isAdEnable) {
+      if (isConnected) {
+        ever(
+          VpnCtrl.ins.vpnStateObs,
+          (state) {
+            if (state == VpnState.connected && !isAdRequested) {
+              _requestAd();
+            }
+          },
+        );
+      } else {
+        _requestAd();
+      }
+    } else {
+      _pbKey.currentState?.completeProgress();
+    }
+  }
+
+  void _requestAd() {
+    if (isAdRequested) return;
+    isAdRequested = true;
+    AdCtrl.instance.loadAd(
+      AdPosition.interTwo,
+      onSuccess: () {
+        _pbKey.currentState?.completeProgress();
+      },
+      onFailed: (e) {
+        _pbKey.currentState?.completeProgress();
+      },
+    );
   }
 
   @override
@@ -87,8 +122,14 @@ class _ExecutingDialogState extends State<ExecutingDialog> {
               child: Stack(
                 children: [
                   AutoProgressBar(
-                    maxWaitTime: Duration(seconds: 1),
-                    onComplete: () => widget.onEnd(),
+                    key: _pbKey,
+                    maxWaitTime: Duration(seconds: 18),
+                    onComplete: () {
+                      if (isAdEnable) {
+                        AdCtrl.instance.showAd(AdPosition.interTwo);
+                      }
+                      widget.onEnd();
+                    },
                     isEnableShow: false,
                   ),
                   LoadingAnimationWidget.waveDots(color: Colors.white, size: 44)

@@ -128,7 +128,7 @@ class _LoadingDialogState extends State<LoadingDialog> {
                 children: [
                   AutoProgressBar(
                     key: _pbKey,
-                    maxWaitTime: Duration(seconds: 18),
+                    maxWaitTime: Duration(seconds: isAdEnable ? 18 : 3),
                     onComplete: () {
                       if (isAdEnable) {
                         AdCtrl.instance.showAd(AdPosition.interThree);

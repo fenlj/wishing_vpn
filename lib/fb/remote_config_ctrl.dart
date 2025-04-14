@@ -17,7 +17,7 @@ class RemoteConfigCtrl extends GetxController {
     "clicklimit_all": 20,
     "one_sdkkey": "blank",
     "refer": {
-      "refer_control": false,
+      "refer_control": true,
       "utm_campaign": [
         "fb4a",
         "gclid",

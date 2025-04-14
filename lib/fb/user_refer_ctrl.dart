@@ -10,6 +10,8 @@ class UserReferCtrl extends GetxController {
   final _isAdUser = false.obs;
   bool get isAdUser => _isAdUser.value;
 
+  final isReferInitialized = false.obs;
+
   static const String _referKey = 'user_install_refer';
   String? _installRefer;
 
@@ -19,10 +21,7 @@ class UserReferCtrl extends GetxController {
 
     if (_installRefer != null) {
       _checkIsAdUser();
-      return;
-    }
-
-    if (!GetPlatform.isAndroid) {
+      isReferInitialized.value = true;
       return;
     }
 
@@ -38,6 +37,7 @@ class UserReferCtrl extends GetxController {
     } finally {
       _checkIsAdUser();
       Log.conf('Is ad user: $_isAdUser, referrer: $_installRefer');
+      isReferInitialized.value = true;
     }
   }
 

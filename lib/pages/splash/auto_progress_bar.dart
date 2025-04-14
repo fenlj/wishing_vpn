@@ -30,6 +30,7 @@ class AutoProgressBarState extends State<AutoProgressBar> {
   Timer? _firstStageTimer;
   Timer? _maxWaitTimer;
   Timer? _secondStageTimer;
+  bool _isCalledComplete = false;
 
   @override
   void initState() {
@@ -48,6 +49,10 @@ class AutoProgressBarState extends State<AutoProgressBar> {
           _firstStageComplete = true;
           timer.cancel();
           widget.onFirstStageComplete?.call();
+          if (_isCalledComplete) {
+            completeProgress();
+            return;
+          }
           _startMaxWaitTimer();
         }
       });
@@ -63,6 +68,7 @@ class AutoProgressBarState extends State<AutoProgressBar> {
   }
 
   void completeProgress() {
+    _isCalledComplete = true;
     if (!_firstStageComplete) return;
     _maxWaitTimer?.cancel();
 

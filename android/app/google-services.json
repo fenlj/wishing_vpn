@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "422943722063",
-    "project_id": "vid-saver-d58d4",
-    "storage_bucket": "vid-saver-d58d4.firebasestorage.app"
+    "project_number": "344669942702",
+    "project_id": "wishing-v",
+    "storage_bucket": "wishing-v.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:422943722063:android:3f0cd2a12b376813eaed8b",
+        "mobilesdk_app_id": "1:344669942702:android:f7f2a239c4bd23d4ba8e3f",
         "android_client_info": {
           "package_name": "com.wishvpn.wishing"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDR9aLFCRe5Urvi0oGuzeLlqfMx2osrgxz"
+          "current_key": "AIzaSyAndmsbTkW3hkIoxD7Co0bByioaoL0KOg0"
         }
       ],
       "services": {

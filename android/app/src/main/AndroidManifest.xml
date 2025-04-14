@@ -4,6 +4,9 @@
         android:label="Wishing VPN"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-5981953164409139~8212399065"/>
         <activity
             android:name="com.example.wishing_vpn.MainActivity"
             android:exported="true"

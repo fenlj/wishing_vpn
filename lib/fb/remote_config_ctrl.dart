@@ -17,7 +17,7 @@ class RemoteConfigCtrl extends GetxController {
     "clicklimit_all": 20,
     "one_sdkkey": "blank",
     "refer": {
-      "refer_control": true,
+      "refer_control": false,
       "utm_campaign": [
         "fb4a",
         "gclid",
@@ -29,22 +29,22 @@ class RemoteConfigCtrl extends GetxController {
     "interstitial_info": [
       {
         "position": "inter_one",
-        "ads_type": "inter",
-        "ad_ids": ["blank"],
+        "ads_type": "open",
+        "ad_ids": ["ca-app-pub-3940256099942544/9257395921"],
         "showlimit": 500,
         "clicklimit": 50
       },
       {
         "position": "inter_two",
         "ads_type": "inter",
-        "ad_ids": ["blank"],
+        "ad_ids": ["ca-app-pub-3940256099942544/5224354917"],
         "showlimit": 500,
         "clicklimit": 50
       },
       {
         "position": "inter_three",
         "ads_type": "inter",
-        "ad_ids": ["blank"],
+        "ad_ids": ["ca-app-pub-3940256099942544/5224354917"],
         "showlimit": 500,
         "clicklimit": 50
       }
@@ -82,7 +82,7 @@ class RemoteConfigCtrl extends GetxController {
       Log.conf('Error fetching remote config: $e');
     } finally {
       Log.conf('Remote config initialized, $_config');
-      Get.put(UserReferCtrl()..initialize());
+      UserReferCtrl.ins.initialize();
     }
   }
 

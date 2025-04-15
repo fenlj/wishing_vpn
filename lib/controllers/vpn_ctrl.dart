@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:oneconnect_flutter/openvpn_flutter.dart';
+import 'package:wishing_vpn/fb/config.dart';
 import 'package:wishing_vpn/pages/dialog/executing_dialog.dart';
 import 'package:wishing_vpn/resource/assets.dart';
 
@@ -178,7 +179,7 @@ class VpnCtrl extends GetxController {
       certIsRequired: certificateVerify,
       username: vpnSever.vpnUserName,
       password: vpnSever.vpnPassword,
-      // bypassPackages: ['com.wishvpn.wishing'],
+      bypassPackages: isDev ? ['com.wishvpn.wishing'] : null,
     );
     selectedVpnServer = vpnSever;
     update();

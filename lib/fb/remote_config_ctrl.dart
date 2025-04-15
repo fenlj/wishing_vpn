@@ -3,54 +3,14 @@ import 'dart:convert';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:get/get.dart';
 import 'package:wishing_vpn/ext/log.dart';
+import 'package:wishing_vpn/fb/config.dart';
 import 'package:wishing_vpn/fb/user_refer_ctrl.dart';
 
 class RemoteConfigCtrl extends GetxController {
   static RemoteConfigCtrl get ins => Get.find();
   final _remoteConfig = FirebaseRemoteConfig.instance;
 
-  static const String _defaultConfig = '''
-  {
-    "fbid": "blank",
-    "fbtoken": "blank",
-    "showlimit_all": 80,
-    "clicklimit_all": 20,
-    "one_sdkkey": "blank",
-    "refer": {
-      "refer_control": true,
-      "utm_campaign": [
-        "fb4a",
-        "gclid",
-        "youtubeads",
-        "apps.facebook.com",
-        "apps.instagram.com"
-      ]
-    },
-    "interstitial_info": [
-      {
-        "position": "inter_one",
-        "ads_type": "open",
-        "ad_ids": ["ca-app-pub-3940256099942544/9257395921"],
-        "showlimit": 500,
-        "clicklimit": 50
-      },
-      {
-        "position": "inter_two",
-        "ads_type": "inter",
-        "ad_ids": ["ca-app-pub-3940256099942544/5224354917"],
-        "showlimit": 500,
-        "clicklimit": 50
-      },
-      {
-        "position": "inter_three",
-        "ads_type": "inter",
-        "ad_ids": ["ca-app-pub-3940256099942544/5224354917"],
-        "showlimit": 500,
-        "clicklimit": 50
-      }
-    ]
-  }
-  ''';
+  static const String _defaultConfig = isDev ? devConfig : prodConfig;
 
   Map<String, dynamic>? _cachedConfig;
 

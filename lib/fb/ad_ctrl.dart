@@ -162,7 +162,7 @@ class AdCtrl extends GetxController {
     Function()? onSuccess,
     Function(String)? onFailed,
   ) async {
-    Log.d('open ad start load: ${position.value}', tag: 'ad');
+    Log.d('open ad start load: ${position.value} $adUnitId', tag: 'ad');
     await AppOpenAd.load(
       adUnitId: adUnitId,
       request: const AdRequest(),
@@ -190,7 +190,7 @@ class AdCtrl extends GetxController {
     Function()? onSuccess,
     Function(String)? onFailed,
   ) async {
-    Log.d('ins ad start load: ${position.value}', tag: 'ad');
+    Log.d('ins ad start load: ${position.value} $adUnitId', tag: 'ad');
     await InterstitialAd.load(
       adUnitId: adUnitId,
       request: const AdRequest(),
@@ -218,7 +218,7 @@ class AdCtrl extends GetxController {
     Function()? onSuccess,
     Function(String)? onFailed,
   ) async {
-    Log.d('reward ad start load: ${position.value}', tag: 'ad');
+    Log.d('reward ad start load: ${position.value} $adUnitId', tag: 'ad');
     await RewardedAd.load(
       adUnitId: adUnitId,
       request: const AdRequest(),

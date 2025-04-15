@@ -14,6 +14,7 @@ import 'package:wishing_vpn/fb/user_refer_ctrl.dart';
 import 'package:wishing_vpn/pages/pages.dart';
 
 const messageChannel = EventChannel('wishing.event');
+const nativeMethod = MethodChannel('wishing.native.method');
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();

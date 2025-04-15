@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:wishing_vpn/ext/log.dart';
 import 'package:wishing_vpn/fb/config.dart';
 import 'package:wishing_vpn/fb/user_refer_ctrl.dart';
+import 'package:wishing_vpn/main.dart';
 
 class RemoteConfigCtrl extends GetxController {
   static RemoteConfigCtrl get ins => Get.find();
@@ -43,6 +44,7 @@ class RemoteConfigCtrl extends GetxController {
     } finally {
       Log.conf('Remote config initialized, $_config');
       UserReferCtrl.ins.initialize();
+      nativeMethod.invokeMethod("initFb", {"fbId": fbid, "fbToken": fbtoken});
     }
   }
 

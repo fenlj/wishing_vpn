@@ -63,6 +63,7 @@ class _ExecutingDialogState extends State<ExecutingDialog> {
   void initState() {
     super.initState();
     isConnected = widget.isToConnected;
+    isAdRequested = false;
     startTime = DateTime.now();
     isAdEnable = AdCtrl.instance.canShowAd(AdPosition.interTwo);
     if (isAdEnable) {

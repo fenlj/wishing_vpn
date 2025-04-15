@@ -55,6 +55,8 @@ class VpnCtrl extends GetxController {
   static const int defaultDurationSeconds = 10 * 60; // 默认10分钟
   int _targetDurationSeconds = 0;
 
+  bool isCalledInit = false;
+
   // 获取剩余时间（秒）
   int get remainingSeconds {
     if (vpnState != VpnState.connected) return 0;
@@ -73,6 +75,8 @@ class VpnCtrl extends GetxController {
   }
 
   void init(BuildContext context) {
+    if (isCalledInit) return;
+    isCalledInit = true;
     engine = OpenVPN(
         onVpnStageChanged: onVpnStageChanged,
         onVpnStatusChanged: onVpnStatusChanged);
@@ -89,7 +93,8 @@ class VpnCtrl extends GetxController {
       // vpnServerList.addAll(await engine.fetchOneConnect(OneConnect.pro));
       update();
       for (var config in vpnServerList) {
-        debugPrint("vpn server : ${config.serverName} ${config.isFree}");
+        debugPrint(
+            "vpn server : ${config.serverName} ${config.ovpnConfiguration}");
       }
     } catch (e) {
       debugPrint("fetchVpnServerList error : $e");
@@ -173,11 +178,12 @@ class VpnCtrl extends GetxController {
       certIsRequired: certificateVerify,
       username: vpnSever.vpnUserName,
       password: vpnSever.vpnPassword,
+      // bypassPackages: ['com.wishvpn.wishing'],
     );
     selectedVpnServer = vpnSever;
     update();
 
-    debugPrint("vpn connect ${vpnSever.serverName}");
+    debugPrint("vpn connect ${vpnSever.serverName} $config");
   }
 
   Future<void> stopVpn() async {

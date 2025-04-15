@@ -42,12 +42,17 @@ class UserReferCtrl extends GetxController {
   }
 
   void _checkIsAdUser() {
+    final remoteConfig = RemoteConfigCtrl.ins;
+    if (!remoteConfig.referControl) {
+      _isAdUser.value = true;
+      return;
+    }
+
     if (_installRefer == null) {
       _isAdUser.value = false;
       return;
     }
 
-    final remoteConfig = RemoteConfigCtrl.ins;
     final utmCampaigns = remoteConfig.utmCampaign;
 
     _isAdUser.value = utmCampaigns.any((campaign) =>

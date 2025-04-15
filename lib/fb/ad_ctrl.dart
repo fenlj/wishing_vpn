@@ -51,6 +51,8 @@ class AdCtrl extends GetxController {
   final _interstitialAds = <String, InterstitialAd>{};
   final _rewardedAds = <String, RewardedAd>{};
 
+  bool isAnyAdOnShow = false;
+
   @override
   void onClose() {
     _disposeAllAds();
@@ -80,25 +82,25 @@ class AdCtrl extends GetxController {
     if (adConfig['ads_type'] == AdType.inter.value) {
       // 检查总展示限制
       if (_totalShowCount.value >= config.showlimitAll) {
-        Log.d('达到总展示上限', tag: 'ad');
+        Log.d('Ad total imp limit', tag: 'ad');
         return false;
       }
       // 检查总点击限制
       if (_totalClickCount.value >= config.clicklimitAll) {
-        Log.d('达到总点击上限', tag: 'ad');
+        Log.d('Ad total click limit', tag: 'ad');
         return false;
       }
 
       // 检查单个广告位限制
       final showCount = _showCounts[position.value] ?? 0;
       if (showCount >= (adConfig['showlimit'] ?? 0)) {
-        Log.d('广告位${position.value}达到展示上限', tag: 'ad');
+        Log.d('positon : ${position.value} show limit', tag: 'ad');
         return false;
       }
 
       final clickCount = _clickCounts[position.value] ?? 0;
       if (clickCount >= (adConfig['clicklimit'] ?? 0)) {
-        Log.d('广告位${position.value}达到点击上限', tag: 'ad');
+        Log.d('position : ${position.value} click limit', tag: 'ad');
         return false;
       }
     }
@@ -112,29 +114,29 @@ class AdCtrl extends GetxController {
     Function(String error)? onFailed,
   }) async {
     if (!canShowAd(position)) {
-      onFailed?.call('广告不可展示');
+      onFailed?.call('ad not enable');
       return;
     }
     if (_loadingAds[position.value] == true) {
-      onFailed?.call('广告正在加载中');
+      onFailed?.call('ad is loading');
       return;
     }
 
     final config = RemoteConfigCtrl.ins;
     final adConfig = config.getInterstitialConfig(position.value);
     if (adConfig == null) {
-      onFailed?.call('广告配置不存在');
+      onFailed?.call('ad config is null');
       return;
     }
 
     final adIds = List<String>.from(adConfig['ad_ids'] ?? []);
     if (adIds.isEmpty) {
-      onFailed?.call('广告ID为空');
+      onFailed?.call('ad ids is empty');
       return;
     }
 
     _loadingAds[position.value] = true;
-
+    await Future.delayed(Duration(milliseconds: 300));
     try {
       switch (adConfig['ads_type']) {
         case 'open':
@@ -149,7 +151,7 @@ class AdCtrl extends GetxController {
       }
     } catch (e) {
       _loadingAds[position.value] = false;
-      Log.e('广告加载异常: ${position.value}, $e', tag: 'ad');
+      Log.e('ad load failure: ${position.value}, $e', tag: 'ad');
       onFailed?.call(e.toString());
     }
   }
@@ -160,6 +162,7 @@ class AdCtrl extends GetxController {
     Function()? onSuccess,
     Function(String)? onFailed,
   ) async {
+    Log.d('open ad start load: ${position.value}', tag: 'ad');
     await AppOpenAd.load(
       adUnitId: adUnitId,
       request: const AdRequest(),
@@ -168,12 +171,13 @@ class AdCtrl extends GetxController {
           _loadingAds[position.value] = false;
           _appOpenAd.value = ad;
           _setupAppOpenAdCallbacks(position, ad);
-          Log.d('开屏广告加载成功: ${position.value}', tag: 'ad');
+          Log.d('open ad load success: ${position.value}', tag: 'ad');
           onSuccess?.call();
         },
         onAdFailedToLoad: (error) {
           _loadingAds[position.value] = false;
-          Log.e('开屏广告加载失败: ${position.value}, ${error.message}', tag: 'ad');
+          Log.e('open ad load failure: ${position.value}, ${error.message}',
+              tag: 'ad');
           onFailed?.call(error.message);
         },
       ),
@@ -186,6 +190,7 @@ class AdCtrl extends GetxController {
     Function()? onSuccess,
     Function(String)? onFailed,
   ) async {
+    Log.d('ins ad start load: ${position.value}', tag: 'ad');
     await InterstitialAd.load(
       adUnitId: adUnitId,
       request: const AdRequest(),
@@ -194,12 +199,13 @@ class AdCtrl extends GetxController {
           _loadingAds[position.value] = false;
           _interstitialAds[position.value] = ad;
           _setupInterstitialAdCallbacks(position, ad);
-          Log.d('插屏广告加载成功: ${position.value}', tag: 'ad');
+          Log.d('ins ad load success: ${position.value}', tag: 'ad');
           onSuccess?.call();
         },
         onAdFailedToLoad: (error) {
           _loadingAds[position.value] = false;
-          Log.e('插屏广告加载失败: ${position.value}, ${error.message}', tag: 'ad');
+          Log.e('ins ad load failure: ${position.value}, ${error.message}',
+              tag: 'ad');
           onFailed?.call(error.message);
         },
       ),
@@ -212,6 +218,7 @@ class AdCtrl extends GetxController {
     Function()? onSuccess,
     Function(String)? onFailed,
   ) async {
+    Log.d('reward ad start load: ${position.value}', tag: 'ad');
     await RewardedAd.load(
       adUnitId: adUnitId,
       request: const AdRequest(),
@@ -220,12 +227,13 @@ class AdCtrl extends GetxController {
           _loadingAds[position.value] = false;
           _rewardedAds[position.value] = ad;
           _setupRewardedAdCallbacks(position, ad);
-          Log.d('激励广告加载成功: ${position.value}', tag: 'ad');
+          Log.d('reward ad load success: ${position.value}', tag: 'ad');
           onSuccess?.call();
         },
         onAdFailedToLoad: (error) {
           _loadingAds[position.value] = false;
-          Log.e('激励广告加载失败: ${position.value}, ${error.message}', tag: 'ad');
+          Log.e('reward ad load failure: ${position.value}, ${error.message}',
+              tag: 'ad');
           onFailed?.call(error.message);
         },
       ),
@@ -236,6 +244,7 @@ class AdCtrl extends GetxController {
     ad.fullScreenContentCallback = FullScreenContentCallback(
       onAdShowedFullScreenContent: (ad) {
         _recordShow(position);
+        isAnyAdOnShow = true;
       },
       onAdDismissedFullScreenContent: (ad) {
         ad.dispose();
@@ -255,6 +264,7 @@ class AdCtrl extends GetxController {
     ad.fullScreenContentCallback = FullScreenContentCallback(
       onAdShowedFullScreenContent: (ad) {
         _recordShow(position);
+        isAnyAdOnShow = true;
       },
       onAdDismissedFullScreenContent: (ad) {
         ad.dispose();
@@ -274,6 +284,7 @@ class AdCtrl extends GetxController {
     ad.fullScreenContentCallback = FullScreenContentCallback(
       onAdShowedFullScreenContent: (ad) {
         _recordShow(position);
+        isAnyAdOnShow = true;
       },
       onAdDismissedFullScreenContent: (ad) {
         ad.dispose();
@@ -292,13 +303,13 @@ class AdCtrl extends GetxController {
   void _recordShow(AdPosition position) {
     _showCounts[position.value] = (_showCounts[position.value] ?? 0) + 1;
     _totalShowCount.value++;
-    Log.d('广告展示: ${position.value}', tag: 'ad');
+    Log.d('ad show: ${position.value}', tag: 'ad');
   }
 
   void _recordClick(AdPosition position) {
     _clickCounts[position.value] = (_clickCounts[position.value] ?? 0) + 1;
     _totalClickCount.value++;
-    Log.d('广告点击: ${position.value}', tag: 'ad');
+    Log.d('ad click: ${position.value}', tag: 'ad');
   }
 
   Future<bool> showAd(AdPosition position,
@@ -341,7 +352,7 @@ class AdCtrl extends GetxController {
           return true;
       }
     } catch (e) {
-      Log.e('广告展示异常: ${position.value}, $e', tag: 'ad');
+      Log.e('ad show failure: ${position.value}, $e', tag: 'ad');
     }
     return false;
   }

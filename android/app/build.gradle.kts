@@ -53,6 +53,12 @@ android {
         implementation("com.google.code.gson:gson:2.10.1")
         implementation("com.facebook.android:facebook-android-sdk:16.0.0")
     }
+
+   packagingOptions {
+       jniLibs {
+           useLegacyPackaging = true
+       }
+   }
 }
 
 flutter {

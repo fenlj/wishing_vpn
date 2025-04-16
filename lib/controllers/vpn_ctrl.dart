@@ -94,8 +94,7 @@ class VpnCtrl extends GetxController {
       // vpnServerList.addAll(await engine.fetchOneConnect(OneConnect.pro));
       update();
       for (var config in vpnServerList) {
-        debugPrint(
-            "vpn server : ${config.serverName} ${config.ovpnConfiguration}");
+        debugPrint("vpn server : ${config.serverName}");
       }
     } catch (e) {
       debugPrint("fetchVpnServerList error : $e");
@@ -184,7 +183,7 @@ class VpnCtrl extends GetxController {
     selectedVpnServer = vpnSever;
     update();
 
-    debugPrint("vpn connect ${vpnSever.serverName} $config");
+    debugPrint("vpn connect ${vpnSever.serverName}");
   }
 
   Future<void> stopVpn() async {

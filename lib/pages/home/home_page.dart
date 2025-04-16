@@ -41,7 +41,7 @@ class HomePage extends StatelessWidget {
               Image.asset(Assets.appTextPNG, width: 122, height: 22),
               Gap(16),
               Text(
-                'version : 1.0.1',
+                'version : 1.0.2',
                 style: TextStyle(
                   fontSize: 14,
                   color: Color(0xffA5A3E1),

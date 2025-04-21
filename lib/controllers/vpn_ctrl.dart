@@ -91,7 +91,7 @@ class VpnCtrl extends GetxController {
   void fetchVpnServerList() async {
     try {
       vpnServerList.addAll(await engine.fetchOneConnect(OneConnect.pro));
-      // vpnServerList.addAll(await engine.fetchOneConnect(OneConnect.pro));
+      vpnServerList.addAll(await engine.fetchOneConnect(OneConnect.free));
       update();
       for (var config in vpnServerList) {
         debugPrint("vpn server : ${config.serverName}");

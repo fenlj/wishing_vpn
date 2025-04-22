@@ -3,6 +3,7 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:wishing_vpn/ext/log.dart';
 import 'package:wishing_vpn/fb/remote_config_ctrl.dart';
 import 'package:wishing_vpn/fb/user_refer_ctrl.dart';
+import 'package:wishing_vpn/main.dart';
 
 enum AdType {
   open, // 开屏广告
@@ -241,6 +242,11 @@ class AdCtrl extends GetxController {
   }
 
   void _setupAppOpenAdCallbacks(AdPosition position, AppOpenAd ad) {
+    ad.onPaidEvent = (Ad ad, double valueMicros, PrecisionType precision,
+        String currencyCode) {
+      Log.d('ad value: $valueMicros', tag: 'ad');
+      nativeMethod.invokeMethod('reportAdValue', {'adValue': valueMicros});
+    };
     ad.fullScreenContentCallback = FullScreenContentCallback(
       onAdShowedFullScreenContent: (ad) {
         _recordShow(position);
@@ -261,6 +267,11 @@ class AdCtrl extends GetxController {
   }
 
   void _setupInterstitialAdCallbacks(AdPosition position, InterstitialAd ad) {
+    ad.onPaidEvent = (Ad ad, double valueMicros, PrecisionType precision,
+        String currencyCode) {
+      Log.d('ad value: $valueMicros', tag: 'ad');
+      nativeMethod.invokeMethod('reportAdValue', {'adValue': valueMicros});
+    };
     ad.fullScreenContentCallback = FullScreenContentCallback(
       onAdShowedFullScreenContent: (ad) {
         _recordShow(position);
@@ -281,6 +292,11 @@ class AdCtrl extends GetxController {
   }
 
   void _setupRewardedAdCallbacks(AdPosition position, RewardedAd ad) {
+    ad.onPaidEvent = (Ad ad, double valueMicros, PrecisionType precision,
+        String currencyCode) {
+      Log.d('ad value: $valueMicros', tag: 'ad');
+      nativeMethod.invokeMethod('reportAdValue', {'adValue': valueMicros});
+    };
     ad.fullScreenContentCallback = FullScreenContentCallback(
       onAdShowedFullScreenContent: (ad) {
         _recordShow(position);

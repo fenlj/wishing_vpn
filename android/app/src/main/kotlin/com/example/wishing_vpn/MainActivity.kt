@@ -7,9 +7,12 @@ import android.content.Intent
 import com.example.wishing_vpn.msg.AppMessageSender
 import com.example.wishing_vpn.msg.RouteEvent
 import com.facebook.FacebookSdk
+import com.facebook.appevents.AppEventsLogger
 import io.flutter.Log
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
+import java.math.BigDecimal
+import java.util.Currency
 
 class MainActivity : FlutterActivity() {
 
@@ -26,6 +29,17 @@ class MainActivity : FlutterActivity() {
                         call.argument<String>("fbId") ?: "",
                         call.argument<String>("fbToken") ?: ""
                     )
+                }
+
+                "reportAdValue" -> {
+                    try {
+                        val adValue = call.argument<Double>("adValue") ?: 0.0
+                        Log.d("Facebook","report value $adValue")
+                        AppEventsLogger.newLogger(this)
+                            .logPurchase(BigDecimal(adValue / 1000000), Currency.getInstance("USD"))
+                    } catch (e:Exception) {
+                        Log.d("Facebook","$e")
+                    }
                 }
             }
         }
@@ -47,7 +61,7 @@ class MainActivity : FlutterActivity() {
     }
 
     private fun initFacebook(context: Context, fbId: String, fbToken: String) {
-        Log.d("Facebook","init $fbId $fbToken")
+        Log.d("Facebook", "init $fbId $fbToken")
         if (fbId == "blank" || fbToken == "blank") return
         if (fbId.isNotEmpty() && fbToken.isNotEmpty()) {
             FacebookSdk.setApplicationId(fbId)

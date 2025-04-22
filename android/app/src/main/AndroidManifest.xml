@@ -4,13 +4,13 @@
         android:label="Wishing VPN"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
-        <!--<meta-data
-            android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-5981953164409139~8212399065"/>--> 
-            <!-- Product admob id -->
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-4442975717313005~1757384896"/> 
+            android:value="ca-app-pub-5981953164409139~8212399065"/> 
+            <!-- Product admob id -->
+        <!-- <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-4442975717313005~1757384896"/>  -->
         <meta-data android:name="com.facebook.sdk.AutoInitEnabled"
             android:value="false"/>
         <activity

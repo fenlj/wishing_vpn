@@ -19,7 +19,8 @@ class RemoteConfigCtrl extends GetxController {
     if (_cachedConfig != null) return _cachedConfig!;
 
     try {
-      _cachedConfig = jsonDecode(_remoteConfig.getString('config'));
+      _cachedConfig = jsonDecode(
+          !isDev ? _remoteConfig.getString('config') : _defaultConfig);
     } catch (e) {
       _cachedConfig = jsonDecode(_defaultConfig);
     }

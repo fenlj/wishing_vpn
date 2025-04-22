@@ -1,4 +1,4 @@
-const bool isDev = false;
+const bool isDev = true;
 
 const String devConfig = """
 {
@@ -8,7 +8,7 @@ const String devConfig = """
     "clicklimit_all": 20,
     "one_sdkkey": "blank",
     "refer": {
-      "refer_control": true,
+      "refer_control": false,
       "utm_campaign": [
         "fb4a",
         "gclid",

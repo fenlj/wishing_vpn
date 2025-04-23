@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:get/get.dart';
+import 'package:wishing_vpn/controllers/vpn_ctrl.dart';
 import 'package:wishing_vpn/ext/log.dart';
 import 'package:wishing_vpn/fb/config.dart';
 import 'package:wishing_vpn/fb/user_refer_ctrl.dart';
@@ -19,8 +20,7 @@ class RemoteConfigCtrl extends GetxController {
     if (_cachedConfig != null) return _cachedConfig!;
 
     try {
-      _cachedConfig = jsonDecode(
-          !isDev ? _remoteConfig.getString('config') : _defaultConfig);
+      _cachedConfig = jsonDecode(_remoteConfig.getString('config'));
     } catch (e) {
       _cachedConfig = jsonDecode(_defaultConfig);
     }
@@ -45,6 +45,8 @@ class RemoteConfigCtrl extends GetxController {
     } finally {
       Log.conf('Remote config initialized, $_config');
       UserReferCtrl.ins.initialize();
+      final vpnCtrl = Get.find<VpnCtrl>();
+      vpnCtrl.init(Get.context!);
       nativeMethod.invokeMethod("initFb", {"fbId": fbid, "fbToken": fbtoken});
     }
   }

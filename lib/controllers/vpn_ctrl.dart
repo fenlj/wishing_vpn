@@ -3,11 +3,12 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:oneconnect_flutter/openvpn_flutter.dart';
+import 'package:wishing_vpn/ext/log.dart';
 import 'package:wishing_vpn/fb/config.dart';
+import 'package:wishing_vpn/fb/remote_config_ctrl.dart';
 import 'package:wishing_vpn/pages/dialog/executing_dialog.dart';
 import 'package:wishing_vpn/resource/assets.dart';
 
-// const String apiKey = '4.ybL4psDW856z1En0qLR73H3l.9tuImZHmuV0aWu4nr1nvA4k';
 const String apiKey = 'QteI0cixbMpTO6PY4LI5mHnRYAL8vThxJc..VdKpigaca06FGt';
 
 enum VpnState { stopped, connecting, connected, disconnecting, error }
@@ -81,7 +82,11 @@ class VpnCtrl extends GetxController {
     engine = OpenVPN(
         onVpnStageChanged: onVpnStageChanged,
         onVpnStatusChanged: onVpnStatusChanged);
-    engine.initializeOneConnect(context, apiKey);
+    var remoteKey = RemoteConfigCtrl.ins.oneSdkkey;
+    var initKey =
+        remoteKey != 'blank' && remoteKey.isNotEmpty ? remoteKey : apiKey;
+    engine.initializeOneConnect(context, initKey);
+    Log.conf("api key : $initKey");
     engine.initialize(
         lastStatus: onVpnStatusChanged,
         lastStage: (stage) => onVpnStageChanged(stage, stage.name));

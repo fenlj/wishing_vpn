@@ -2,6 +2,7 @@ import 'package:android_play_install_referrer/android_play_install_referrer.dart
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wishing_vpn/ext/log.dart';
+import 'package:wishing_vpn/fb/config.dart';
 import 'package:wishing_vpn/fb/remote_config_ctrl.dart';
 
 class UserReferCtrl extends GetxController {
@@ -61,6 +62,7 @@ class UserReferCtrl extends GetxController {
 
   bool canShowAd() {
     final remoteConfig = RemoteConfigCtrl.ins;
+    if (isDev) return false;
     if (!remoteConfig.referControl) return true;
     return isAdUser;
   }

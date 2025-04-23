@@ -20,15 +20,14 @@ class _SplashPageState extends State<SplashPage> {
   @override
   void initState() {
     super.initState();
-    Log.i("splash initState ${UserReferCtrl.ins.isReferInitialized.value}",
+    Log.i(
+        "splash initState ${UserReferCtrl.ins.isReferAndUmpInitialized.value}",
         tag: "splash");
     _worker = ever(
-      UserReferCtrl.ins.isReferInitialized,
+      UserReferCtrl.ins.isReferAndUmpInitialized,
       (c) => _openAd(),
     );
-    if (UserReferCtrl.ins.isReferInitialized.value) {
-      _openAd();
-    }
+    _openAd();
   }
 
   @override
@@ -38,16 +37,18 @@ class _SplashPageState extends State<SplashPage> {
   }
 
   void _openAd() {
-    if (UserReferCtrl.ins.canShowAd()) {
-      AdCtrl.instance.loadAd(
-        AdPosition.interOne,
-        onSuccess: () {
-          _pbKey.currentState?.completeProgress();
-        },
-        onFailed: (e) {},
-      );
-    } else {
-      _pbKey.currentState?.completeProgress();
+    if (UserReferCtrl.ins.isReferAndUmpInitialized.value) {
+      if (UserReferCtrl.ins.canShowAd()) {
+        AdCtrl.instance.loadAd(
+          AdPosition.interOne,
+          onSuccess: () {
+            _pbKey.currentState?.completeProgress();
+          },
+          onFailed: (e) {},
+        );
+      } else {
+        _pbKey.currentState?.completeProgress();
+      }
     }
   }
 

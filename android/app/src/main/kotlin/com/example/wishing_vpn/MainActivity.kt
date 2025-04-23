@@ -4,10 +4,15 @@ import android.content.Context
 import io.flutter.embedding.android.FlutterActivity
 import top.oneconnect.oneconnect_flutter.OpenVPNFlutterPlugin
 import android.content.Intent
+import android.os.Bundle
+import com.example.wishing_vpn.msg.AppMessage
 import com.example.wishing_vpn.msg.AppMessageSender
 import com.example.wishing_vpn.msg.RouteEvent
 import com.facebook.FacebookSdk
 import com.facebook.appevents.AppEventsLogger
+import com.google.android.ump.ConsentInformation
+import com.google.android.ump.ConsentRequestParameters
+import com.google.android.ump.UserMessagingPlatform
 import io.flutter.Log
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
@@ -15,7 +20,7 @@ import java.math.BigDecimal
 import java.util.Currency
 
 class MainActivity : FlutterActivity() {
-
+    private lateinit var consentInformation: ConsentInformation
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
         AppMessageSender.init(flutterEngine.dartExecutor)
@@ -45,6 +50,11 @@ class MainActivity : FlutterActivity() {
         }
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        initUmp()
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         OpenVPNFlutterPlugin.connectWhileGranted(requestCode == 24 && resultCode == RESULT_OK)
         super.onActivityResult(requestCode, resultCode, data)
@@ -72,6 +82,36 @@ class MainActivity : FlutterActivity() {
                 FacebookSdk.setAutoLogAppEventsEnabled(true)
             }
             FacebookSdk.setAutoLogAppEventsEnabled(true)
+        }
+    }
+
+    private fun initUmp(){
+        val params = ConsentRequestParameters.Builder().build()
+        val startUmpTime = System.currentTimeMillis()
+        consentInformation = UserMessagingPlatform.getConsentInformation(activity)
+        //consentInformation.reset()
+        consentInformation.requestConsentInfoUpdate(activity, params, {
+            UserMessagingPlatform.loadAndShowConsentFormIfRequired(
+                activity
+            ) { loadAndShowError ->
+                // Consent gathering failed.
+                if (loadAndShowError != null) {
+                    Log.d("UMP", "$loadAndShowError")
+                }
+                // Consent has been gathered.
+                if (consentInformation.canRequestAds()) {
+                    Log.d("UMP","can request ads")
+                    AppMessageSender.send(AppMessage("ad_enable"))
+                } else {
+                    Log.d("UMP","can not request ads")
+                    AppMessageSender.send(AppMessage("ad_lock"))
+                }
+            }
+        }) { requestConsentError ->
+            // Consent gathering failed.
+            Log.d("UMP","request consent error")
+            AppMessageSender.send(AppMessage("ad_enable"))
+            // recheckAd(true)
         }
     }
 }

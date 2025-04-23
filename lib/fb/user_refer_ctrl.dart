@@ -2,7 +2,6 @@ import 'package:android_play_install_referrer/android_play_install_referrer.dart
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wishing_vpn/ext/log.dart';
-import 'package:wishing_vpn/fb/config.dart';
 import 'package:wishing_vpn/fb/remote_config_ctrl.dart';
 
 class UserReferCtrl extends GetxController {
@@ -10,8 +9,12 @@ class UserReferCtrl extends GetxController {
 
   final _isAdUser = false.obs;
   bool get isAdUser => _isAdUser.value;
+  final _isUmpEnabled = false.obs;
+  bool get isUmpEnabled => _isUmpEnabled.value;
 
-  final isReferInitialized = false.obs;
+  final isReferAndUmpInitialized = false.obs;
+  bool isRefrrInitialized = false;
+  bool isUmpInitiialized = false;
 
   static const String _referKey = 'user_install_refer';
   String? _installRefer;
@@ -22,7 +25,8 @@ class UserReferCtrl extends GetxController {
 
     if (_installRefer != null) {
       _checkIsAdUser();
-      isReferInitialized.value = true;
+      isRefrrInitialized = true;
+      changeReferAndUmpInitialized();
       return;
     }
 
@@ -38,8 +42,22 @@ class UserReferCtrl extends GetxController {
     } finally {
       _checkIsAdUser();
       Log.conf('Is ad user: $_isAdUser, referrer: $_installRefer');
-      isReferInitialized.value = true;
+      isRefrrInitialized = true;
+      changeReferAndUmpInitialized();
     }
+  }
+
+  void changeReferAndUmpInitialized() {
+    isReferAndUmpInitialized.value = isRefrrInitialized && isUmpInitiialized;
+    Log.conf(
+        'Refer and UMP initialized: $isRefrrInitialized $isUmpInitiialized');
+  }
+
+  void changeUmpStatus(bool isEnabled) {
+    _isUmpEnabled.value = isEnabled;
+    isUmpInitiialized = true;
+    Log.conf('UMP status changed: $isEnabled');
+    changeReferAndUmpInitialized();
   }
 
   void _checkIsAdUser() {
@@ -62,7 +80,8 @@ class UserReferCtrl extends GetxController {
 
   bool canShowAd() {
     final remoteConfig = RemoteConfigCtrl.ins;
-    if (isDev) return false;
+    // if (isDev) return false;
+    if (!isUmpEnabled) return false;
     if (!remoteConfig.referControl) return true;
     return isAdUser;
   }

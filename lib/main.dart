@@ -49,6 +49,12 @@ class _MainAppState extends State<MainApp> {
         }
         AdCtrl.instance.isAnyAdOnShow = false;
       }
+      if (eventName == 'ad_enable') {
+        UserReferCtrl.ins.changeUmpStatus(true);
+      }
+      if (eventName == 'ad_lock') {
+        UserReferCtrl.ins.changeUmpStatus(false);
+      }
     });
   }
 

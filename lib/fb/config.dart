@@ -1,4 +1,4 @@
-const bool isDev = true;
+const bool isDev = false;
 
 const String devConfig = """
 {
